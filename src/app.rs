@@ -54,11 +54,7 @@ pub fn app() -> Html {
 fn check_input(e: KeyboardEvent, angle: usize, id: &'static str) {
     if e.key() == "Enter" {
         let document = web_sys::window().unwrap_throw().document().unwrap_throw();
-        let input: HtmlInputElement = document
-            .get_element_by_id("guess1")
-            .unwrap_throw()
-            .dyn_into()
-            .unwrap_throw();
+        let input: HtmlInputElement = get_element_by_id(document, id);
 
         input.set_read_only(true);
         let guessed_angle: usize = input.value().parse().unwrap_throw();
@@ -70,11 +66,7 @@ fn check_input(e: KeyboardEvent, angle: usize, id: &'static str) {
             _ => return, // should never happen
         };
 
-        let input: HtmlElement = document
-            .get_element_by_id(answer)
-            .unwrap_throw()
-            .dyn_into()
-            .unwrap_throw();
+        let input: HtmlElement = get_element_by_id(document, answer);
         let error = guessed_angle.abs_diff(angle) as f64;
         let error_percentage = (360.0 - error) / 360.0 * 100.0;
         let class = match error_percentage {
@@ -93,11 +85,7 @@ fn check_input(e: KeyboardEvent, angle: usize, id: &'static str) {
         ));
         input.set_hidden(false);
         if let Some(next) = next {
-            let next_input: HtmlInputElement = document
-                .get_element_by_id(next)
-                .unwrap_throw()
-                .dyn_into()
-                .unwrap_throw();
+            let next_input: HtmlInputElement = get_element_by_id(document, next);
             next_input.set_hidden(false);
             next_input.focus().unwrap_throw();
         } else {
