@@ -151,6 +151,11 @@ fn generate_svg(date: Date, part: u32) -> (usize, Html) {
         + center;
 
     let middle = Vec2 {
+        x: (offset_by + angle / 2.0).cos(),
+        y: (offset_by + angle / 2.0).sin(),
+    } * rayon
+        + center;
+    let opposite_middle = Vec2 {
         x: (offset_by + angle / 2.0 + PI).cos(),
         y: (offset_by + angle / 2.0 + PI).sin(),
     } * rayon
@@ -158,9 +163,22 @@ fn generate_svg(date: Date, part: u32) -> (usize, Html) {
 
     let angle = angle.to_degrees() as usize;
     let diam = (rayon * 2.0).to_string();
-    let mask = format!(
+    let keep_mask = format!(
         "{},{} {},{} {},{} {},{} {},{}",
         rayon, rayon, first.x, first.y, middle.x, middle.y, second.x, second.y, rayon, rayon,
+    );
+    let remove_mask = format!(
+        "{},{} {},{} {},{} {},{} {},{}",
+        rayon,
+        rayon,
+        first.x,
+        first.y,
+        opposite_middle.x,
+        opposite_middle.y,
+        second.x,
+        second.y,
+        rayon,
+        rayon,
     );
     let svg = html! {
         <svg
@@ -172,7 +190,7 @@ fn generate_svg(date: Date, part: u32) -> (usize, Html) {
 
           <defs>
             <@{"clipPath"} id={format!("keepAngle-{part}")}>
-             <polygon points={mask.to_string()} />
+             <polygon points={keep_mask.to_string()} />
             </@>
           </defs>
 
@@ -183,7 +201,7 @@ fn generate_svg(date: Date, part: u32) -> (usize, Html) {
           } else {
               <circle cx={rayon.to_string()} cy={rayon.to_string()} r={(rayon / 2.0).to_string()} fill="red" />
               <circle cx={rayon.to_string()} cy={rayon.to_string()} r={(rayon / 2.0 - 1.0).to_string()} fill="black" />
-              <polygon points={mask.to_string()} fill="black"/>
+              <polygon points={remove_mask.to_string()} fill="black"/>
           }
           <line
                 x1={center.x.to_string()} y1={center.y.to_string()}
