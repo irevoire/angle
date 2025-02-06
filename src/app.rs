@@ -1,3 +1,5 @@
+use std::f32::consts::PI;
+
 use emath::Vec2;
 use js_sys::{
     wasm_bindgen::{JsCast, UnwrapThrowExt},
@@ -148,11 +150,17 @@ fn generate_svg(date: Date, part: u32) -> (usize, Html) {
     } * rayon
         + center;
 
+    let middle = Vec2 {
+        x: (offset_by + angle / 2.0 + PI).cos(),
+        y: (offset_by + angle / 2.0 + PI).sin(),
+    } * rayon
+        + center;
+
     let angle = angle.to_degrees() as usize;
     let diam = (rayon * 2.0).to_string();
     let mask = format!(
-        "{},{} {},{} {},{} {},{}",
-        rayon, rayon, first.x, first.y, second.x, second.y, rayon, rayon,
+        "{},{} {},{} {},{} {},{} {},{}",
+        rayon, rayon, first.x, first.y, middle.x, middle.y, second.x, second.y, rayon, rayon,
     );
     let svg = html! {
         <svg
