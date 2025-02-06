@@ -6,7 +6,7 @@ use js_sys::{
     Date,
 };
 use rand::{rngs::SmallRng, Rng, SeedableRng};
-use web_sys::{Document, HtmlElement, HtmlInputElement};
+use web_sys::{Document, HtmlElement, HtmlInputElement, SvgCircleElement};
 use yew::prelude::*;
 
 #[function_component(App)]
@@ -61,10 +61,10 @@ fn check_input(e: KeyboardEvent, angle: usize, id: &'static str) {
         input.set_read_only(true);
         let guessed_angle: usize = input.value().parse().unwrap_throw();
 
-        let (next, answer, score_id) = match id {
-            "guess1" => (Some("guess2"), "answer1", "score1"),
-            "guess2" => (Some("guess3"), "answer2", "score2"),
-            "guess3" => (None, "answer3", "score3"),
+        let (next, answer, score_id, display_next_problem) = match id {
+            "guess1" => (Some("guess2"), "answer1", "score1", "hide-problem-1"),
+            "guess2" => (Some("guess3"), "answer2", "score2", "hide-problem-2"),
+            "guess3" => (None, "answer3", "score3", "hide-problem-3"),
             _ => return, // should never happen
         };
 
@@ -90,6 +90,8 @@ fn check_input(e: KeyboardEvent, angle: usize, id: &'static str) {
             let next_input: HtmlInputElement = get_element_by_id(&document, next);
             next_input.set_hidden(false);
             next_input.focus().unwrap_throw();
+            let next_input: SvgCircleElement = get_element_by_id(&document, display_next_problem);
+            next_input.remove();
         } else {
             finish_game(&document);
         }
@@ -211,6 +213,9 @@ fn generate_svg(date: Date, part: u32) -> (usize, Html) {
                 x1={center.x.to_string()} y1={center.y.to_string()}
                 x2={second.x.to_string()} y2={second.y.to_string()} stroke="white"
             />
+            if part > 0 {
+              <circle id={format!("hide-problem-{part}")} cx={rayon.to_string()} cy={rayon.to_string()} r={rayon.to_string()}/>
+            }
         </svg>
     };
     (angle, svg)
