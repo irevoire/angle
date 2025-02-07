@@ -1,0 +1,101 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(to bottom right, #444444, #009a5b);
+  font-size: 1.5rem;
+}
+
+main {
+  color: #fff6d5;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.failure {
+  display: inline-block;
+  padding: 5px 10px;
+  background: linear-gradient(to bottom right, red, orange);
+  color: white;
+  border-radius: 50px;
+  text-align: center;
+}
+
+.error {
+  padding: 5px 10px;
+  background: linear-gradient(to bottom right, orange, yellow);
+  color: white;
+  border-radius: 50px;
+  text-align: center;
+}
+
+.almost {
+  padding: 5px 10px;
+  background: linear-gradient(to bottom right, yellow, green);
+  color: white;
+  border-radius: 50px;
+  text-align: center;
+}
+
+.good {
+  padding: 5px 10px;
+  background: linear-gradient(to bottom right, green, cyan);
+  color: white;
+  border-radius: 50px;
+  text-align: center;
+}
+
+.perfect {
+  padding: 5px 10px;
+  background: linear-gradient(to bottom right, cyan, white);
+  color: black;
+  border-radius: 50px;
+  text-align: center;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: gray;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 80%;
+  z-index: 1000;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.rotating {
+  animation: rotating 25s linear infinite;
+}
+
+.rotating_fast {
+  animation: rotating 2s linear infinite reverse;
+}

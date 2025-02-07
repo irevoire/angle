@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<script type="module">
+import init, * as bindings from 'https://angle.tamo.cool/trunk-template-86774ccb594abaae.js';
+const wasm = await init({ module_or_path: 'https://angle.tamo.cool/trunk-template-86774ccb594abaae_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+    <meta charset="utf-8" />
+    <title>angle</title>
+    <link rel="stylesheet" href="https://angle.tamo.cool/index-5a9ae1b7a7f72262.css" integrity="sha384&#x2D;TomkSxGlKRpegEu7UntwiE&#x2F;cJs57OP&#x2F;XhFsOQ7VQwGLzD7O00VZHiqnKZyVx794i"/>
+  <link rel="modulepreload" href="https://angle.tamo.cool/trunk-template-86774ccb594abaae.js" crossorigin="anonymous" integrity="sha384-No62aypOCpdoI/9alTx12+SzhEvclCw/bvZ8WiMUNw/4Tb+W5kK4mevN6pdTC1Fw"><link rel="preload" href="https://angle.tamo.cool/trunk-template-86774ccb594abaae_bg.wasm" crossorigin="anonymous" integrity="sha384-Vsfm3LqGSxyDpbUa2UYsljOgKcX02hpAvOJq4MX2e9dLZ0/QOrLUdEbOHq9W+fHp" as="fetch" type="application/wasm"></head>
+</html>
