@@ -131,6 +131,16 @@ fn get_element_by_id<T: JsCast>(document: &Document, id: &str) -> T {
 fn generate_svg(date: Date, part: u32) -> (usize, Html) {
     let seed = date.get_full_year() * date.get_month() * date.get_date() + part;
     let mut rng = SmallRng::seed_from_u64(seed as u64);
+    let curse = match part {
+        0 => "".to_string(),
+        1 => new_curse(&mut rng, &[]),
+        2 => {
+            let curse1 = new_curse(&mut rng, &[]);
+            format!("{curse1} {}", new_curse(&mut rng, &[&curse1]))
+        }
+        _ => panic!(),
+    };
+
     let angle = (rng.random_range(0..360) as f32).to_radians();
     // We're going to draw both lines in a circle with a diameter of 100.
     // - It's center will be at 50,50.
@@ -188,6 +198,7 @@ fn generate_svg(date: Date, part: u32) -> (usize, Html) {
           baseProfile="full"
           width={diam.to_string()}
           height={diam.to_string()}
+          class={curse}
           xmlns="http://www.w3.org/2000/svg">
 
           <defs>
@@ -237,5 +248,25 @@ fn generate_title_for_score(score: f32) -> &'static str {
         80.00..=90.00 => "You're supposed to think before typing",
         90.00..=100.00 => "Not bad for a blind person",
         _ => "I lost your score but it was probably bad anyway",
+    }
+}
+
+fn new_curse<R: Rng>(rng: &mut R, already_used: &[&str]) -> String {
+    loop {
+        let curse = rng.random_range(0..1);
+        let curse = match curse {
+            0 => {
+                let curse = "rotating";
+                if !already_used.contains(&curse) {
+                    curse.to_string()
+                } else {
+                    "rotating_fast".to_string()
+                }
+            }
+            _ => unreachable!(),
+        };
+        if !already_used.contains(&curse.as_str()) {
+            return curse;
+        }
     }
 }
